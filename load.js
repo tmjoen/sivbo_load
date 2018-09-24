@@ -1,10 +1,11 @@
 const { Cluster } = require('puppeteer-cluster');
-const MAX_USERS = 40;
+const START_USER = 0;
+const END_USER = 40;
 
 (async () => {
   const cluster = await Cluster.launch({
     concurrency: Cluster.CONCURRENCY_CONTEXT,
-    maxConcurrency: 20,
+    maxConcurrency: 8,
   });
 
   await cluster.task(async ({ page, data: userId }) => {
@@ -38,7 +39,7 @@ const MAX_USERS = 40;
     }
   });
 
-  for (let x = 0; x < MAX_USERS; x++) {
+  for (let x = START_USER; x < END_USER; x++) {
     await cluster.queue(x);
   }
   // many more pages
