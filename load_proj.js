@@ -1,14 +1,13 @@
 const { Cluster } = require('puppeteer-cluster');
 const START_USER = 0;
-const END_USER = 10;
+const END_USER = 16;
 
 (async () => {
   const cluster = await Cluster.launch({
     concurrency: Cluster.CONCURRENCY_CONTEXT,
-    maxConcurrency: 5,
+    maxConcurrency: 8,
     monitor: true,
-    workerCreationDelay: 200,
-    timeout: 90000
+    workerCreationDelay: 200
   });
 
   cluster.on('taskerror', (err, data) => {
@@ -35,15 +34,14 @@ const END_USER = 10;
       await page.waitFor(1000);
       await page.click('.row a.btn');
     }
-    await page.waitFor('.chat-button');
+    await page.waitFor('.new-project-wrapper button');
 
     // go to the chat tab
-    await page.click('.chat-button');
-    await page.waitFor('.card-footer input.form-control');
-    for (let i = 0; i < 50; i++) {
-      await page.type('.card-footer input.form-control', 'chat message from user ' + userId + '\r');
-      await page.waitFor(1200);
-    }
+    await page.click('.new-project-wrapper button');
+    await page.waitFor('.project-create');
+    await page.click('#customer_type_new_customer');
+    await page.waitFor('#project_customer_email');
+    await page.screenshot();
   });
 
   for (let x = START_USER; x < END_USER; x++) {
