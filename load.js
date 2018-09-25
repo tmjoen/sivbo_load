@@ -8,7 +8,7 @@ const END_USER = 10;
     maxConcurrency: 5,
     monitor: true,
     workerCreationDelay: 200,
-    timeout: 90000
+    timeout: 120000
   });
 
   cluster.on('taskerror', (err, data) => {
@@ -40,7 +40,7 @@ const END_USER = 10;
     // go to the chat tab
     await page.click('.chat-button');
     await page.waitFor('.card-footer input.form-control');
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 20; i++) {
       await page.type('.card-footer input.form-control', 'chat message from user ' + userId + '\r');
       await page.waitFor(1200);
     }
